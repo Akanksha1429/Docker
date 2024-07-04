@@ -10,6 +10,8 @@ RUN apt-get update && \
     pip install -r requirements.txt && \
     cd devops
 
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
+
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
 
