@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+
+  frontend:
+    image: nginx:latest
+    container_name: frontend
+    networks:
+      - frontend-network
+
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      DB_HOST: postgres
+      DB_NAME: employees
+      DB_USER: admin
+      DB_PASSWORD: password
+      DB_PORT: 5432
+    ports:
+      - "5001:5000"
+    depends_on:
+      - postgres
+    networks:
+      - frontend-network
+      - backend-network
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: employees
+    # ports:
+    #   - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend-network
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - backend-network
+
+volumes:
+  postgres_data:
+networks:
+  frontend-network:
+  backend-network:

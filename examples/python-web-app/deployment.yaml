@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-python-app
+  labels:
+    app: sample-python
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample-python
+  template:
+    metadata:
+      labels:
+        app: sample-python
+    spec:
+      containers:
+      - name: python-app
+        image: akanksha141999/python-web-app:latest
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

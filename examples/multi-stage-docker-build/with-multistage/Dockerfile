@@ -1,8 +1,4 @@
-###########################################
-# BASE IMAGE
-###########################################
-
-FROM ubuntu as test
+FROM ubuntu AS test
 
 # Set the working directory in the image
 WORKDIR /app
@@ -16,11 +12,7 @@ ENV NAME world
 # Copy the files from the host file system to the image file system
 COPY . /app
 
-############################################
-# HERE STARTS THE MAGIC OF MULTI STAGE BUILD
-############################################
-
-FROM gcr.io/distroless/python3
+FROM gcr.io/distroless/python3 AS diployer
 
 # Copy the compiled binary from the build stage
 COPY --from=test /app /app
